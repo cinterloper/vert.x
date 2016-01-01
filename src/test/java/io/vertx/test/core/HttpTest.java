@@ -5107,5 +5107,30 @@ public class HttpTest extends HttpTestBase {
     await();
   }
 
-
+  @Test
+  public void testDontReusePipelinedConnectionWhenResponseEndsBeforeRequest() throws Exception {
+    client.close();
+    client = vertx.createHttpClient(new HttpClientOptions().setMaxPoolSize(1).setPipelining(true).setKeepAlive(true));
+    server.requestHandler(req -> {
+      req.response().end();
+    });
+    server.listen(ar -> {
+      assertTrue(ar.succeeded());
+      HttpClientRequest req = client.get(DEFAULT_HTTP_PORT, DEFAULT_HTTP_HOST, "/");
+      req.handler(resp -> {
+        resp.endHandler(v1 -> {
+          // End request after the response ended
+          vertx.setTimer(100, v2 -> {
+            req.end();
+          });
+        });
+      });
+      // Send head to the server and trigger the request handler
+      req.sendHead();
+      client.get(DEFAULT_HTTP_PORT, DEFAULT_HTTP_HOST, "/", resp -> {
+        testComplete();
+      }).end();
+    });
+    await();
+  }
 }

@@ -22,6 +22,7 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.net.NetSocket;
@@ -70,6 +71,10 @@ public class HttpClientResponseImpl implements HttpClientResponse  {
     this.request = request;
     this.conn = conn;
     this.response = response;
+  }
+
+  public HttpClientRequest request() {
+    return request;
   }
 
   @Override
