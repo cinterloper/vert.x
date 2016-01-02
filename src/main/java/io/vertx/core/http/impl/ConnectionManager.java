@@ -122,7 +122,7 @@ public abstract class ConnectionManager {
 
     // Called when the response has ended
     public synchronized void responseEnded(ClientConnection conn, boolean close) {
-      if ((pipelining || keepAlive) && !close) {
+      if ((pipelining || keepAlive) && !close && ((conn.getCurrentRequest() == null || conn.getCurrentRequest() != conn.getCurrentResponse().request()))) {
         Waiter waiter = getNextWaiter();
         if (waiter != null) {
           waiter.context.runOnContext(v -> waiter.handler.handle(conn));

@@ -285,7 +285,7 @@ class ClientConnection extends ConnectionBase {
     // We don't signal response end for a 100-continue response as a real response will follow
     // Also we keep the connection open for an HTTP CONNECT
     // Also we make sure that the current response ended before the request
-    if (currentResponse.statusCode() != 100 && requestForResponse.getRequest().getMethod() != HttpMethod.CONNECT && (currentRequest == null || currentRequest != currentResponse.request())) {
+    if (currentResponse.statusCode() != 100 && requestForResponse.getRequest().getMethod() != HttpMethod.CONNECT) {
 
       boolean close = false;
       // See https://tools.ietf.org/html/rfc7230#section-6.3
@@ -357,6 +357,14 @@ class ClientConnection extends ConnectionBase {
     }
     currentRequest = null;
     listener.requestEnded(this);
+  }
+
+  synchronized HttpClientRequestImpl getCurrentRequest() {
+    return currentRequest;
+  }
+
+  synchronized HttpClientResponseImpl getCurrentResponse() {
+    return currentResponse;
   }
 
   public String hostHeader() {
