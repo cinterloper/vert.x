@@ -391,7 +391,7 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         ClusterManager mgr;
         String clusterManagerClassName = System.getProperty("vertx.cluster.managerClass");
         if (clusterManagerClassName != null) {
-          // We allow specify a sys prop for the cluster manager factory which overrides ServiceLoader
+          // We allow specify a sys prop for the cluster manager factory which overrides javahttps://github.com/eclipse/vert.x/blob/65a1050b0922de38329cdbe90c5ecd8094a93a04/src/main/java/io/vertx/core/ServiceHelper.java
           try {
             Class<?> clazz = Class.forName(clusterManagerClassName);
             mgr = (ClusterManager) clazz.newInstance();

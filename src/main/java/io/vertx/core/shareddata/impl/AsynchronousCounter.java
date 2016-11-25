@@ -16,10 +16,7 @@
 
 package io.vertx.core.shareddata.impl;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Context;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
+import io.vertx.core.*;
 import io.vertx.core.impl.VertxInternal;
 import io.vertx.core.shareddata.Counter;
 
@@ -31,15 +28,16 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class AsynchronousCounter implements Counter {
 
-  private final VertxInternal vertx;
+  private final Vertx vertx;
   private final AtomicLong counter;
 
-  public AsynchronousCounter(VertxInternal vertx) {
+  public AsynchronousCounter(Vertx vertx) {
     this.vertx = vertx;
     this.counter = new AtomicLong();
+
   }
 
-  public AsynchronousCounter(VertxInternal vertx, AtomicLong counter) {
+  public AsynchronousCounter(Vertx vertx, AtomicLong counter) {
     this.vertx = vertx;
     this.counter = counter;
   }
